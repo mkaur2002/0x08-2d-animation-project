@@ -1,87 +1,109 @@
 <!DOCTYPE html>
 <html lang="en" class="h-full w-full">
-  <head>
+
+<head>
     <title>0x08 : 2D Animations (Project)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-  </head>
-  <body class="h-full w-full text-sm">
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"></script>
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="h-full w-full text-sm">
     <div class="container flex flex-col nowrap gap-2
                 p-8 h-full m-auto">
-      <header class="flex flex-col md:flex-row justify-between md:items-end">
-        <h1 class="flex-none text-2xl font-bold">0x08 :
-          2D Animations (Project)</h1>
-        <p class="md:text-right text-xs md:text-sm" id="by"></p>
-      </header>
-      <div class="flex-1 flex flex-col lg:flex-row
+        <header class="flex flex-col md:flex-row justify-between md:items-end">
+            <h1 class="flex-none text-2xl font-bold">2D Animation Game</h1>
+            <p class="md:text-right text-xs md:text-sm" id="by"></p>
+        </header>
+        <div class="flex-1 flex flex-col lg:flex-row
                   gap-4 lg:gap-8">
-        <main class="experiment flex-1 flex flex-col gap-2">
-          <div class="flex-1 relative">
-            <canvas id="myCanvas"
-                    width="10" height="1"
-                    class=" bg-slate-100 w-full h-full"></canvas>
-            <div class="absolute top-0 right-0 text-center">
-              <a class="cursor-pointer block p-2
+            <main class="experiment flex-1 flex flex-col gap-2">
+                <div class="flex-1 relative">
+                    <div id="mainContainer">
+                        <!-- Canvas Area to Draw Objects -->
+                        <canvas id="myCanvas" width="10" height="1" class=" bg-slate-100 w-full h-full"></canvas>
+                        <canvas id="myCanvas"></canvas>
+                        <canvas id="animCanvas"></canvas>
+                        <h1 id="score">0</h1> 
+                        <!-- Number of Arrows and Timer Zone -->
+                        <div id="showPoint">
+                            <div id="timerDiv"></div>
+                            <p id="arrs">&uarr;</p><span class="u">&uarr; +4</span>
+                        </div>
+                        <!-- Entry Page  -->
+                        <div id="entrypage">
+                            <br><br><br><br>
+                            <h1 id="title"><span style="font-size:60px">B</span>ULLSEYE<br><br><br><span style="font-size:60px">B</span>LITZ</h1>
+                            <br><br><br><br>
+                            <div id="rules">
+                                <p style="color: black; font-weight: bolder;"> Guidelines:</p>
+                                <p style="color:black; font-weight: bolder;" >Fire the bullet within 6 seconds,<br> else it will fire itself</p>
+                            </div><br><br>
+                            <button id="startbtn" style="color: black;">TAP TO START</button>
+                            <br><br><br><br><br><br>
+                            <h1 id="Score">0</h1>
+                        </div>                
+                        <div id="popup" class="popup">
+                            <p>Press <strong>G</strong> to play</p>
+                          </div>
+                    </div>
+                    <div class="absolute top-0 right-0 text-center">
+                        <a class="cursor-pointer block p-2
                         text-blue-300 hover:text-blue-500
-                        active:text-blue-700"
-                 href="javascript:saveCanvas()"
-                 title="Download canvas as image."
-                 ><ion-icon
-                    name="save"
-                    class="text-3xl"
-                    ></ion-icon><br/>
-                <span class="text-sm">Download</span></a>
-          </div>          </div>
-        </main>
-        <aside class="flex-none flex flex-col gap-2
-                    lg:max-w-sm min-h-52"
-               id="side-note">
-          <h2 class="text-lg font-bold">Simple
-            <a href="https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame"
-               ><code>requestAnimationFrame</code></a></h2>
-          <p>The value updated by <code>stepperOne</code>
-            is:</p>
-          <pre class="text-xs"><code id="valueFromStepperOne"></code></pre>
+                        active:text-blue-700" href="javascript:saveCanvas()"
+                            title="Download canvas as image."><ion-icon name="save" class="text-3xl"></ion-icon><br />
+                            <span class="text-sm">Download</span></a>
+                    </div>
+                </div>
+            </main>
+            <aside class="flex-none flex flex-col gap-2
+                    lg:max-w-sm min-h-52" id="side-note">
+                <h2 class="text-lg font-bold">Simple
+                    <a
+                        href="https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame"><code>requestAnimationFrame</code></a>
+                </h2>
+                <p>The value updated by <code>stepperOne</code>
+                    is:</p>
+                <pre class="text-xs"><code id="valueFromStepperOne"></code></pre>
 
-          <div class="hidden">
-            <h2 class="text-lg font-bold">Normalising speed in
-              a <a href="https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame"
-                   ><code>rAF</code> callback</a></h2>
-            <p>The returned numberline will be of the same
-              scale, irrespective of refresh
-              rate <code>requestAnimationFrame</code></p>
+                <div class="hidden">
+                    <h2 class="text-lg font-bold">Normalising speed in
+                        a <a href="https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame"><code>rAF</code>
+                            callback</a></h2>
+                    <p>The returned numberline will be of the same
+                        scale, irrespective of refresh
+                        rate <code>requestAnimationFrame</code></p>
 
-            <p>The value updated by <code>stepperTwo</code>
-              is:</p>
-            <pre><code id="valueFromStepperTwo"></code></pre>
-          </div>
+                    <p>The value updated by <code>stepperTwo</code>
+                        is:</p>
+                    <pre><code id="valueFromStepperTwo"></code></pre>
+                </div>
 
-          <div class="hidden">
-            <h3>Using <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes"
-                         >Javascript <code>class</code></a></h3>
-            <p>The value updated by <code>stepperThree</code>
-              is:</p>
-            <pre><code id="valueFromStepperThree"></code></pre>
-          </div>
-          
-        </aside>
-      </div>
+                <div class="hidden">
+                    <h3>Using <a
+                            href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes">Javascript
+                            <code>class</code></a></h3>
+                    <p>The value updated by <code>stepperThree</code>
+                        is:</p>
+                    <pre><code id="valueFromStepperThree"></code></pre>
+                </div>
+
+            </aside>
+        </div>
     </div>
-    <script type="text/javascript"
-            src="./canvas-helpers.js"></script>
-    <script type="text/javascript"
-            src="./steppers.js"></script>
-    <script type="text/javascript"
-            src="./domel.js"></script>
-    <script type="text/javascript"
-            src="./clock.js"></script>
-    <script type="text/javascript"
-            src="./experiment.js"></script>
-    <script type="text/javascript"
-            src="./main.js"></script>
+    <script type="text/javascript" src="./canvas-helpers.js"></script>
+    <script type="text/javascript" src="./steppers.js"></script>
+    <script type="text/javascript" src="./domel.js"></script>
+    <script type="text/javascript" src="./clock.js"></script>
+    <script type="text/javascript" src="./experiment.js"></script>
+    <script type="text/javascript" src="./main.js"></script>
     <script type="text/javascript">
-      main()
+        main()
     </script>
-  </body>
+</body>
+
 </html>
