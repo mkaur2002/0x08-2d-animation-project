@@ -1,18 +1,35 @@
 class Domel {
   #el = null
-  get el () { return this.#el }
+
+  get el() {
+      return this.#el
+  }
+
   constructor(sel) {
-    this.#el = document.querySelector(sel)
+      if (typeof sel === 'string') {
+          this.#el = document.querySelector(sel)
+      } else if (sel instanceof HTMLElement) {
+          this.#el = sel
+      } else {
+          throw new Error('Invalid selector or element provided')
+      }
   }
-  unhide () {
-    if (this.el) {
-      this.el.classList.remove('hidden')
-    }
+
+  unhide() {
+      if (this.el) {
+          this.el.classList.remove('hidden')
+      }
   }
-  on(...args) {
-    this.el.addEventListener(...args)
+
+  on(eventType, callback, options = {}) {
+      if (this.el) {
+          this.el.addEventListener(eventType, callback, options)
+      }
   }
-  off(...args) {
-    this.el.removeEventListener(...args)
+
+  off(eventType, callback, options = {}) {
+      if (this.el) {
+          this.el.removeEventListener(eventType, callback, options)
+      }
   }
 }
